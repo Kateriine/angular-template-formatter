@@ -9,7 +9,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/stringham/angular-template-formatter"
+        "url": "https://github.com/David-Klemenc/angular-template-formatter"
     },
     "categories": [
         "Formatters"
