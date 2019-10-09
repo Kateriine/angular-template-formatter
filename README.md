@@ -31,14 +31,12 @@ will get formatted to:
     <input
         #searchBox
         id="search-box"
-        (keyup)="search(searchBox.value)"
-    >
+        (keyup)="search(searchBox.value)">
     <div>
         <div
             *ngFor="let hero of heroes | async"
             (click)="gotoDetail(hero)"
-            class="search-result"
-        >
+            class="search-result">
             {{hero.name}}
         </div>
     </div>
