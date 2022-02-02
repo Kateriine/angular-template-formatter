@@ -1,68 +1,68 @@
 {
-    "name": "angular-template-formatter",
-    "displayName": "Kat Angular template formatter",
-    "description": "Auto format Angular html templates",
-    "version": "0.1.4",
-    "publisher": "kateriine",
-    "engines": {
-        "vscode": "^1.10.0"
-    },
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/Kateriine/angular-template-formatter"
-    },
-    "categories": [
-        "Formatters"
-    ],
-    "icon": "icon.png",
-    "activationEvents": [
-        "onLanguage:html"
-    ],
-    "main": "./out/extension",
-    "bin": "./bin/cli.js",
-    "scripts": {
-        "vscode:prepublish": "tsc -p ./",
-        "build": "tsc -p ./",
-        "compile": "tsc -watch -p ./",
-        "test": "node ./node_modules/vscode/bin/test"
-    },
-    "contributes": {
-        "configuration": {
-            "type": "object",
-            "title": "Kat Angular template formatter configuration",
-            "properties": {
-                "angular-template-formatter.indentWidth": {
-                    "type": "number",
-                    "default": 4,
-                    "description": "Number of spaces to indent"
-                },
-                "angular-template-formatter.useSpaces": {
-                    "type": "boolean",
-                    "default": true,
-                    "description": "Use spaces or tabs for indentation (False will ignore indentWidth)"
-                },
-                "angular-template-formatter.closeTagSameLine": {
-                    "type": "boolean",
-                    "default": false,
-                    "description": "Never place the closing tag '>' on a new line."
-                }
-            }
+  "name": "kat-angular-template-formatter",
+  "displayName": "Kat Angular template formatter",
+  "description": "Auto format Angular html templates",
+  "version": "0.1.4",
+  "publisher": "kateriine",
+  "engines": {
+    "vscode": "^1.10.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Kateriine/angular-template-formatter"
+  },
+  "categories": [
+    "Formatters"
+  ],
+  "icon": "icon.png",
+  "activationEvents": [
+    "onLanguage:html"
+  ],
+  "main": "./out/extension",
+  "bin": "./bin/cli.js",
+  "scripts": {
+    "vscode:prepublish": "tsc -p ./",
+    "build": "tsc -p ./",
+    "compile": "tsc -watch -p ./",
+    "test": "node ./node_modules/vscode/bin/test"
+  },
+  "contributes": {
+    "configuration": {
+      "type": "object",
+      "title": "Kat Angular template formatter configuration",
+      "properties": {
+        "angular-template-formatter.indentWidth": {
+          "type": "number",
+          "default": 4,
+          "description": "Number of spaces to indent"
+        },
+        "angular-template-formatter.useSpaces": {
+          "type": "boolean",
+          "default": true,
+          "description": "Use spaces or tabs for indentation (False will ignore indentWidth)"
+        },
+        "angular-template-formatter.closeTagSameLine": {
+          "type": "boolean",
+          "default": false,
+          "description": "Never place the closing tag '>' on a new line."
         }
-    },
-    "devDependencies": {
-        "@types/commander": "2.9.0",
-        "@types/jasmine": "^2.5.38",
-        "@types/node": "6.0.46",
-        "commander": "2.9.0",
-        "jasmine": "^2.5.2",
-        "mocha": "^2.3.3",
-        "typescript": "^2.0.3",
-        "vscode": "^1.1.37"
-    },
-    "dependencies": {
-        "@angular/compiler": "4.1.1",
-        "@angular/core": "4.1.1",
-        "rxjs": "5.0",
-        "zone.js": "0.8.4"
+      }
     }
+  },
+  "devDependencies": {
+    "@types/commander": "2.9.0",
+    "@types/jasmine": "^2.5.38",
+    "@types/node": "6.0.46",
+    "commander": "2.9.0",
+    "jasmine": "^2.5.2",
+    "mocha": "^2.3.3",
+    "typescript": "^2.0.3",
+    "vscode": "^1.1.37"
+  },
+  "dependencies": {
+    "@angular/compiler": "4.1.1",
+    "@angular/core": "4.1.1",
+    "rxjs": "5.0",
+    "zone.js": "0.8.4"
+  }
 }
