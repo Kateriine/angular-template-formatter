@@ -9,8 +9,8 @@
         "lib": [
             "es6"
         ],
-        "sourceMap": true,
-        "rootDir": "."
+        "sourceMap": false,
+        "rootDir": "src"
     },
     "exclude": [
         "node_modules",

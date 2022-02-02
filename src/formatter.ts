@@ -31,4 +31,4 @@ export class EditProvider implements DocumentFormattingEditProvider {
             window.showErrorMessage(e.message);
         }
     }
-}
+} 

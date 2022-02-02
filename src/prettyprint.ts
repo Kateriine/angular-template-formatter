@@ -18,6 +18,9 @@ function formatElementName(element: Element) {
     
     return name.replace(/^:svg:/, '');
 }
+function getFromSource(parseLocation: ParseSourceSpan) {
+    return parseLocation.start.file.content.substring(parseLocation.start.offset, parseLocation.end.offset);
+}
 
 function formatElementAttribute(attributeName: string) {
     /* 
@@ -27,6 +30,14 @@ function formatElementAttribute(attributeName: string) {
     * :xml:space="preserve" -> the parser prepends ':'
     */
     return attributeName.replace(/^:/, "")
+}
+
+const getIsPrevText = (nodes: Node[], i: number) => {
+    if(i>0 ){
+       const value = getFromSource(nodes[i - 1].sourceSpan).replace('\n', '').replace(/ /g, '').replace(/\t/g, '').replace(/\n+/, '\n');
+        return nodes[i - 1] instanceof Text && value !== '';
+    } 
+    return false;
 }
 
 export function format(src: string, indentation: number = 4, useSpaces: boolean = true, closeTagSameLine: boolean = false): string {
@@ -80,16 +91,17 @@ export function format(src: string, indentation: number = 4, useSpaces: boolean 
         }
     }
 
-    function getFromSource(parseLocation: ParseSourceSpan) {
-        return parseLocation.start.file.content.substring(parseLocation.start.offset, parseLocation.end.offset);
-    }
 
     let visitor: Visitor = {
-        visitElement: function (element) {
-            if (pretty.length > 0) {
-                pretty.push('\n');
+        visitElement: function (element, {isPrevText}) {
+            if(!isPrevText) {
+                if (pretty.length > 0) {
+                    pretty.push('\n');
+                }
+                pretty.push(getIndent(indent) + '<' + formatElementName(element));
             }
-            pretty.push(getIndent(indent) + '<' + formatElementName(element));
+            else pretty.push('<' + formatElementName(element));
+            
             attrNewLines = element.attrs.length > 1 && element.name != 'link';
             element.attrs.forEach(attr => {
                 attr.visit(visitor, {});
@@ -97,19 +109,28 @@ export function format(src: string, indentation: number = 4, useSpaces: boolean 
             if (!closeTagSameLine && attrNewLines) {
                 pretty.push('\n' + getIndent(indent));
             }
-            pretty.push('>');
+            if (!selfClosing.hasOwnProperty(element.name)) {
+                pretty.push('>');
+            }
+            else {
+                pretty.push(' />');
+            }
             indent++;
             let ctx = {
                 inlineTextNode: false,
                 textNodeInlined: false,
                 skipFormattingChildren: skipFormattingChildren.hasOwnProperty(element.name),
+                isPrevText: false
             };
             if (!attrNewLines && element.children.length == 1) {
                 ctx.inlineTextNode = true;
             }
-            element.children.forEach(element => {
-                element.visit(visitor, ctx);
+           
+            element.children.forEach((e, i) => {
+                ctx.isPrevText = getIsPrevText(element.children, i)
+                e.visit(visitor, ctx);
             });
+            
             indent--;
             if (element.children.length > 0 && !ctx.textNodeInlined && !ctx.skipFormattingChildren) {
                 pretty.push('\n' + getIndent(indent));
@@ -140,6 +161,7 @@ export function format(src: string, indentation: number = 4, useSpaces: boolean 
         },
         visitText: function (text: Text, context: any) {
             const value = getFromSource(text.sourceSpan);
+            
             if (context.skipFormattingChildren) {
                 pretty.push(value);
                 return;
@@ -149,16 +171,19 @@ export function format(src: string, indentation: number = 4, useSpaces: boolean 
 
             context.textNodeInlined = shouldInline;
             if (value.trim().length > 0) {
-                let prefix = shouldInline ? '' : '\n' + getIndent(indent);
-                pretty.push(prefix + value.trim());
+                //remove html spaces when new lines (ex: <icon> + text on new line adds space)
+                // let prefix = shouldInline ? '' : '\n' + getIndent(indent);
+                // pretty.push(prefix + value.trim());
+                pretty.push(value.trim());
             } else if (!shouldInline) {
                 pretty.push(value.replace('\n', '').replace(/ /g, '').replace(/\t/g, '').replace(/\n+/, '\n'));
             }
         }
     }
 
-    htmlResult.rootNodes.forEach(node => {
-        node.visit(visitor, {});
+    htmlResult.rootNodes.forEach((node, i) => {
+        const isPrevText = getIsPrevText(htmlResult.rootNodes, i)
+        node.visit(visitor, {isPrevText});
     })
 
     return pretty.join('').trim() + '\n';

@@ -83,7 +83,7 @@ Now formats svgs in templates
 
 ### 0.0.8
 
-Added option for preventing closing tag `>` from being on their own line: `angular-template-formatter.closeTagSameLine`. Thanks @larscom!
+Added option for preventing closing tag `>` from being on their own line: `kat-angular-template-formatter.closeTagSameLine`. Thanks @larscom!
 
 ### 0.0.7
 
