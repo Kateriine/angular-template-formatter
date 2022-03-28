@@ -2,7 +2,7 @@
   "name": "kat-angular-template-formatter",
   "displayName": "Kat Angular template formatter",
   "description": "Auto format Angular html templates",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "publisher": "kateriine",
   "engines": {
     "vscode": "^1.10.0"

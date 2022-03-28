@@ -1,4 +1,5 @@
 import { Attribute, Comment, Expansion, ExpansionCase, HtmlParser, I18NHtmlParser, Node, ParseSourceSpan, Text, Visitor, Element } from '@angular/compiler';
+import { checkAndUpdatePureExpressionInline } from '@angular/core/src/view/pure_expression';
 
 /* 
 * if the elements has svg: prepended for example <svg:g
@@ -160,7 +161,7 @@ export function format(src: string, indentation: number = 4, useSpaces: boolean 
             console.error('IF YOU SEE THIS THE PRETTY PRINTER NEEDS TO BE UPDATED')
         },
         visitText: function (text: Text, context: any) {
-            const value = getFromSource(text.sourceSpan);
+            let value = getFromSource(text.sourceSpan);
             
             if (context.skipFormattingChildren) {
                 pretty.push(value);
@@ -174,7 +175,10 @@ export function format(src: string, indentation: number = 4, useSpaces: boolean 
                 //remove html spaces when new lines (ex: <icon> + text on new line adds space)
                 // let prefix = shouldInline ? '' : '\n' + getIndent(indent);
                 // pretty.push(prefix + value.trim());
-                pretty.push(value.trim());
+                if(value[0] === `\n`) value = value.trimStart()
+                // if some space is set on checkAndUpdatePureExpressionInline, leave it if there is no new line
+                if(value.includes(`\n`)) value = value.trimEnd()
+                pretty.push( value);
             } else if (!shouldInline) {
                 pretty.push(value.replace('\n', '').replace(/ /g, '').replace(/\t/g, '').replace(/\n+/, '\n'));
             }

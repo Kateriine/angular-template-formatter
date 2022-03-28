@@ -112,7 +112,11 @@ won't become this
 
 ## Release Notes
 
-### 0.1.4
+### 0.1.6
+
+Allow space in text if there is no new line
+
+### 0.1.5
 
 Remove new lines (\n) before and after text nodes to prevent spaces added by browser
 
