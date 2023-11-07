@@ -1,5 +1,9 @@
 # Angular Template Formatter README
 
+# ###DEPRECATED###
+
+## This plugin is no longer maintained due to the impossibility to add Angular compiler module in commonjs.
+
 Extension for formatting Angular 2+ HTML templates. This extension is opinionated and not very configurable.
 
 ## Install:
